@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My FirstOctopress Blog]]></title>
+  <title><![CDATA[My First Octopress Blog]]></title>
   <link href="http://tongcpp.github.io/atom.xml" rel="self"/>
   <link href="http://tongcpp.github.io/"/>
-  <updated>2014-08-21T16:58:39+08:00</updated>
+  <updated>2014-08-21T17:48:41+08:00</updated>
   <id>http://tongcpp.github.io/</id>
   <author>
     <name><![CDATA[Wang Tong]]></name>

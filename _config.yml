@@ -3,7 +3,7 @@
 # ----------------------- #
 
 url: http://tongcpp.github.io
-title: My FirstOctopress Blog
+title: My First Octopress Blog
 subtitle: A blogging framework for hackers.
 author: Wang Tong
 simple_search: https://www.google.com/search
@@ -64,18 +64,14 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Weibo
-weibo_user: 1757517965
+weibo_user: lilytong
 weibo_share: true
 
 # Github repositories
-github_user:
+github_user: tongcpp
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
-
-# Twitter
-twitter_user:
-twitter_tweet_button: true
 
 # Google +1
 google_plus_one: false

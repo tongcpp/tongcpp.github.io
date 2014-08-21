@@ -4,7 +4,7 @@
   <title><![CDATA[My First Octopress Blog]]></title>
   <link href="http://tongcpp.github.io/atom.xml" rel="self"/>
   <link href="http://tongcpp.github.io/"/>
-  <updated>2014-08-21T17:48:41+08:00</updated>
+  <updated>2014-08-21T18:14:18+08:00</updated>
   <id>http://tongcpp.github.io/</id>
   <author>
     <name><![CDATA[Wang Tong]]></name>
@@ -18,7 +18,7 @@
     <link href="http://tongcpp.github.io/blog/2014/08/21/first-article/"/>
     <updated>2014-08-21T16:13:33+08:00</updated>
     <id>http://tongcpp.github.io/blog/2014/08/21/first-article</id>
-    <content type="html"><![CDATA[<p>test</p>
+    <content type="html"><![CDATA[<p>这是我的第一篇博客文章，仅作测试用</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[My First Octopress Blog]]></title>
   <link href="http://tongcpp.github.io/atom.xml" rel="self"/>
   <link href="http://tongcpp.github.io/"/>
-  <updated>2014-08-21T18:14:18+08:00</updated>
+  <updated>2014-09-10T16:03:32+08:00</updated>
   <id>http://tongcpp.github.io/</id>
   <author>
     <name><![CDATA[Wang Tong]]></name>
@@ -18,7 +18,23 @@
     <link href="http://tongcpp.github.io/blog/2014/08/21/first-article/"/>
     <updated>2014-08-21T16:13:33+08:00</updated>
     <id>http://tongcpp.github.io/blog/2014/08/21/first-article</id>
-    <content type="html"><![CDATA[<p>这是我的第一篇博客文章，仅作测试用</p>
+    <content type="html"><![CDATA[<h1>PullToRefresh-PinnedSection-ListView</h1>
+
+<p>前段时间因为项目需求，需要在Android中对ListView同时增加下拉刷新和分段头悬停的效果，受到<a href="https://github.com/dkmeteor">dkmeteor</a>的启发，Merge了两个Github上的开源项目：
+ * <a href="https://github.com/chrisbanes/Android-PullToRefresh">Android-PullToRefresh</a>(handmark版,目前已不再更新)
+ * <a href="https://github.com/emilsjolander/StickyListHeaders">StickyListHeaders</a>(目前版本为2.x)</p>
+
+<p> 由于既有项目里的StickyListHeaders代码为1.x版本，StickyListHeadersListView继承自ListView，故与handmark版的PullToRefreshListView做merge时很顺畅；</p>
+
+<p> 但2.x版的StickyListHeadersListView继承自FrameLayout，与PullToRefresh的融合并不顺利，若要整理拆分出一个独立的lib时遇到很多的问题，
+ 故在分断头悬停需求上采用了另一个类似的开源项目：</p>
+
+<ul>
+<li><a href="https://github.com/beworker/pinned-section-listview(">pinned-section-listview</a></li>
+</ul>
+
+
+<h2>原理</h2>
 ]]></content>
   </entry>
   

@@ -5,11 +5,11 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>PullToRefresh-PinnedSection-ListView - 别过来</title>
+	<title>Android下拉刷新和分段头悬停列表 - 别过来</title>
 	<meta name="author" content="Atom">
 
 	
-	<meta name="description" content="PullToRefresh-PinnedSection-ListView PullToRefresh-PinnedSection-ListView 前段时间因为项目需求，需要在Android中对ListView同时增加下拉刷新和分段头悬停的效果，受到dkmeteor的启发， &hellip;">
+	<meta name="description" content="Android下拉刷新和分段头悬停列表 项目源码 本文所述项目已开源，源码地址 为什么做PullToRefresh-PinnedSection-ListView 前段时间因为项目需求，需要在Android中对ListView同时增加下拉刷新和分段头悬停的效果，受到dkmeteor的启发， &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,8 +91,12 @@
 			
 			<div class="mid-col-container">
 				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-	<h1 class="title" itemprop="name">PullToRefresh-PinnedSection-ListView</h1>
-	<div class="entry-content" itemprop="articleBody"><h1>PullToRefresh-PinnedSection-ListView</h1>
+	<h1 class="title" itemprop="name">Android下拉刷新和分段头悬停列表</h1>
+	<div class="entry-content" itemprop="articleBody"><h2>项目源码</h2>
+
+<p>本文所述项目已开源，<a href="https://github.com/tongcpp/PullToRefresh-PinnedSection-ListView">源码地址</a></p>
+
+<h2>为什么做PullToRefresh-PinnedSection-ListView</h2>
 
 <p>前段时间因为项目需求，需要在Android中对ListView同时增加下拉刷新和分段头悬停的效果，受到<a href="https://github.com/dkmeteor">dkmeteor</a>的启发，Merge了两个Github上的开源项目：</p>
 
@@ -108,11 +112,69 @@
  故在分断头悬停需求上采用了另一个类似的开源项目：</p>
 
 <ul>
-<li><a href="https://github.com/beworker/pinned-section-listview(">pinned-section-listview</a></li>
+<li><a href="https://github.com/beworker/pinned-section-listview">pinned-section-listview</a></li>
 </ul>
 
 
-<h2>原理</h2>
+<h2>我是如何做的</h2>
+
+<p>前面已经介绍过这个过程是“很顺畅”的：</p>
+
+<p>1.Library方面，基于PullToRefresh的Library修改，首先使其依赖StickyListHeaders的Library，通过拷贝src/com/handmark/pulltorefresh/library/PullToRefreshListView.java类，
+新建PullToRefreshPinnedSectionListView.java类;</p>
+
+<p>2.修改PullToRefreshPinnedSectionListView类中createListView()方法，注释以下代码</p>
+
+<pre><code>//      if (VERSION.SDK_INT &gt;= VERSION_CODES.GINGERBREAD) {
+//          lv = new InternalListViewSDK9(context, attrs);
+//      } else {
+//          lv = new InternalListView(context, attrs);
+//      }
+</code></pre>
+
+<p>添加</p>
+
+<pre><code>lv = new PinnedSectionListView(context, attrs);
+</code></pre>
+
+<p>3.Example方面，基于pinned-section-listview的example修改，令其依赖PullToRefresh的Library;</p>
+
+<p>4.修改主类资源文件activity_main.xml,设置List组件为新类：</p>
+
+<pre><code>&lt;com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/list"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:headerDividersEnabled="false"
+android:footerDividersEnabled="false"
+android:divider="@null"
+/&gt;
+</code></pre>
+
+<p>5.改写SampleActivity.java类中getListView()方法：</p>
+
+<pre><code>mpPullToRefreshPinnedSectionListView = (PullToRefreshPinnedSectionListView) findViewById(R.id.list);
+return mpPullToRefreshPinnedSectionListView.getRefreshableView();
+</code></pre>
+
+<p>即可通过</p>
+
+<pre><code>ListView list = getListView();
+</code></pre>
+
+<p>继续进行原example其他操作，详情可阅读<a href="https://github.com/tongcpp/PullToRefresh-PinnedSection-ListView/blob/master/example/src/com/hb/examples/SampleActivity.java">项目代码</a></p>
+
+<h2>另一种实现方式</h2>
+
+<p>本例的实现方式依赖于handmark版下拉刷新组件的灵活性，更重要的一点，要求分段头悬停组件是继承自ListView实现；
+故同理也可用handmark版下拉刷新组件和1.x版的StickyListHeaders组件实现；</p>
+
+<p>另一种实现方式为<a href="https://github.com/dkmeteor/pull-to-refresh-sticky-list">pull-to-refresh-sticky-list</a>，
+其采取合并的是2.x版的StickyListHeaders和johannilsson的android-pulltorefresh，实现形式不同，但效果类似，看过代码后实现起来也“相当顺畅”，有兴趣的同学可以参照此项目；</p>
+
+<h2>建议</h2>
+
+<p>建议在熟悉或使用过原有组件类库的前提下使用本类库。</p>
 </div>
 
 </article>

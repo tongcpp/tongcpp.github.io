@@ -13,3 +13,10 @@ single: true
     <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
 </section>
 {% endif %}
+
+{% if site.duoshuo_show_comment_count==true and page.comments==true %}
+  <section id=”comment”>
+  <h1>发表评论</h1>
+{% include post/duoshuo.html %}
+  </section>
+{% endif %}

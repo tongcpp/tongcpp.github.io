@@ -3,11 +3,11 @@
 # ----------------------- #
 
 url: http://tongcpp.github.io
-title: My First Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Wang Tong
-simple_search: https://www.google.com/search
-description: An android developer
+title: 别过来
+subtitle: 让我飞奔过去
+author: Atom
+simple_search: https://www.google.com.hk/search
+description: An Android App Developer
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -64,7 +64,7 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Weibo
-weibo_user: lilytong
+weibo_user: 1757517965
 weibo_share: true
 
 # Github repositories
@@ -99,3 +99,6 @@ google_analytics_tracking_id:
 
 # Facebook Like
 facebook_like: false
+
+# Duoshuo Comments
+duoshuo_show_comment_count: true

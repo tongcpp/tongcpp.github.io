@@ -5,8 +5,12 @@
 $sans: "Optima", sans-serif, "Microsoft YaHei", "STHeiti" ;
 $serif: "Baskerville", serif;
 $mono: "Bitstream Vera Sans Mono", "Consolas", "Courier", monospace;
-$heading-font-family: "Verdana", $sans, sans-serif;
-$header-title-font-family: "Futura", $sans,  sans-serif;
-$header-subtitle-font-family: "Futura", $sans, sans-serif;
+// $heading-font-family: "Verdana", $sans, sans-serif;
+// $header-title-font-family: "Futura", $sans,  sans-serif;
+// $header-subtitle-font-family: "Futura", $sans, sans-serif;
+
+$heading-font-family: arial, sans-serif;
+$header-title-font-family: arial, sans-serif;
+$header-subtitle-font-family: arial, sans-serif;
 
 $font: $font-default;

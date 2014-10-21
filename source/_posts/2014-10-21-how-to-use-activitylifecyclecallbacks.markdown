@@ -1,12 +1,9 @@
 ---
 layout: post
-title: "How To Use ActivityLifecycleCallbacks"
+title: "ActivityLifecycleCallbacks使用方法初探"
 date: 2014-10-21 15:08:47 +0800
 comments: true
 categories:
----
-# Android开发 - ActivityLifecycleCallbacks使用方法初探
-
 ---
 
 ## ActivityLifecycleCallbacks是什么？
@@ -16,6 +13,7 @@ categories:
 ## 为什么用ActivityLifecycleCallbacks？
 
 - 以往若需监测Activity的生命周期事件代码，你可能是这样做的，重写每一个Acivity的onResume()，然后作统计和处理：
+
       @Override
       protected void onResume() {
         super.onResume();
@@ -32,10 +30,13 @@ categories:
 - android.app.Application.ActivityLifecycleCallbacks
 - 要求API 14+ （Android 4.0+）
 - 继承Application
+
       public class BaseApplication extends Application
 - 在AndroidManifest里起用自定义Application
+
       <application android:name=".global.BaseApplication"
 - 重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
+
       public void onCreate() {
         super.onCreate();
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
@@ -78,6 +79,7 @@ categories:
       };
 
 - 运行结果(Logcat日志)
+
       10-21 14:32:57.722: V/WelcomeActivity(8085): onActivityCreated
       10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityStarted
       10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityResumed

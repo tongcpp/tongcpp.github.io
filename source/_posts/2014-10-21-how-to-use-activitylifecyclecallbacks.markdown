@@ -35,7 +35,7 @@ categories:
 - 在AndroidManifest里起用自定义Application
 
       <application android:name=".global.BaseApplication"
-- 重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
+- 重写Application的onCreate()方法，或在Application的无参构造方法内，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
 
       public void onCreate() {
         super.onCreate();

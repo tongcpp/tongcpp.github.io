@@ -4,7 +4,7 @@
   <title><![CDATA[别过来]]></title>
   <link href="http://tongcpp.github.io/atom.xml" rel="self"/>
   <link href="http://tongcpp.github.io/"/>
-  <updated>2014-10-21T15:09:50+08:00</updated>
+  <updated>2014-10-21T15:16:32+08:00</updated>
   <id>http://tongcpp.github.io/</id>
   <author>
     <name><![CDATA[Atom]]></name>
@@ -14,15 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[How To Use ActivityLifecycleCallbacks]]></title>
+    <title type="html"><![CDATA[ActivityLifecycleCallbacks使用方法初探]]></title>
     <link href="http://tongcpp.github.io/blog/2014/10/21/how-to-use-activitylifecyclecallbacks/"/>
     <updated>2014-10-21T15:08:47+08:00</updated>
     <id>http://tongcpp.github.io/blog/2014/10/21/how-to-use-activitylifecyclecallbacks</id>
-    <content type="html"><![CDATA[<h1>Android开发 - ActivityLifecycleCallbacks使用方法初探</h1>
-
-<hr />
-
-<h2>ActivityLifecycleCallbacks是什么？</h2>
+    <content type="html"><![CDATA[<h2>ActivityLifecycleCallbacks是什么？</h2>
 
 <ul>
 <li>Application通过此接口提供了一套回调方法，用于让开发者对Activity的生命周期事件进行集中处理。</li>
@@ -32,16 +28,18 @@
 <h2>为什么用ActivityLifecycleCallbacks？</h2>
 
 <ul>
-<li>以往若需监测Activity的生命周期事件代码，你可能是这样做的，重写每一个Acivity的onResume()，然后作统计和处理：
-    @Override
-    protected void onResume() {
-      super.onResume();
-      //TODO 处理和统计代码
-      Log.v(TAG, &ldquo;onResume&rdquo;);
-      Logger.v(TAG, &ldquo;onResume&rdquo;);
-      Logging.v(TAG, &ldquo;onResume&rdquo;);
-      &hellip;
-    }</li>
+<li><p>以往若需监测Activity的生命周期事件代码，你可能是这样做的，重写每一个Acivity的onResume()，然后作统计和处理：</p>
+
+<pre><code>@Override
+protected void onResume() {
+  super.onResume();
+  //TODO 处理和统计代码
+  Log.v(TAG, "onResume");
+  Logger.v(TAG, "onResume");
+  Logging.v(TAG, "onResume");
+  ...
+}
+</code></pre></li>
 <li>ActivityLifecycleCallbacks接口回调可以简化这一繁琐过程，在一个类中作统一处理</li>
 </ul>
 
@@ -51,16 +49,21 @@
 <ul>
 <li>android.app.Application.ActivityLifecycleCallbacks</li>
 <li>要求API 14+ （Android 4.0+）</li>
-<li>继承Application
-    public class BaseApplication extends Application</li>
-<li>在AndroidManifest里起用自定义Application
-    &lt;application android:name=&ldquo;.global.BaseApplication&rdquo;</li>
-<li><p>重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
-    public void onCreate() {
-      super.onCreate();
-      this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {</p>
+<li><p>继承Application</p>
 
-<pre><code>    @Override
+<pre><code>public class BaseApplication extends Application
+</code></pre></li>
+<li><p>在AndroidManifest里起用自定义Application</p>
+
+<pre><code>&lt;application android:name=".global.BaseApplication"
+</code></pre></li>
+<li><p>重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口</p>
+
+<pre><code>public void onCreate() {
+  super.onCreate();
+  this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+
+    @Override
     public void onActivityStopped(Activity activity) {
       Logger.v(activity, "onActivityStopped");
     }
@@ -97,19 +100,21 @@
   });
 };
 </code></pre></li>
-<li><p>运行结果(Logcat日志)
-    10-21 14:32:57.722: V/WelcomeActivity(8085): onActivityCreated
-    10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityStarted
-    10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityResumed
-    10-21 14:32:59.164: V/WelcomeActivity(8085): onActivityPaused
-    10-21 14:32:59.194: V/MainActivity(8085): onActivityCreated
-    10-21 14:32:59.224: V/MainActivity(8085): onActivityStarted
-    10-21 14:32:59.224: V/MainActivity(8085): onActivityResumed
-    10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityStopped
-    10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityDestroyed
-    10-21 14:33:06.502: V/MainActivity(8085): onActivityPaused
-    10-21 14:33:06.612: V/MainActivity(8085): onActivityStopped
-    10-21 14:33:06.612: V/MainActivity(8085): onActivityDestroyed</p></li>
+<li><p>运行结果(Logcat日志)</p>
+
+<pre><code>10-21 14:32:57.722: V/WelcomeActivity(8085): onActivityCreated
+10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityStarted
+10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityResumed
+10-21 14:32:59.164: V/WelcomeActivity(8085): onActivityPaused
+10-21 14:32:59.194: V/MainActivity(8085): onActivityCreated
+10-21 14:32:59.224: V/MainActivity(8085): onActivityStarted
+10-21 14:32:59.224: V/MainActivity(8085): onActivityResumed
+10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityStopped
+10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityDestroyed
+10-21 14:33:06.502: V/MainActivity(8085): onActivityPaused
+10-21 14:33:06.612: V/MainActivity(8085): onActivityStopped
+10-21 14:33:06.612: V/MainActivity(8085): onActivityDestroyed
+</code></pre></li>
 </ul>
 
 

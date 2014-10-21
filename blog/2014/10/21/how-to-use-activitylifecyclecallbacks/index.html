@@ -5,11 +5,11 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>How To Use ActivityLifecycleCallbacks - 别过来</title>
+	<title>ActivityLifecycleCallbacks使用方法初探 - 别过来</title>
 	<meta name="author" content="Atom">
 
 	
-	<meta name="description" content="How to Use ActivityLifecycleCallbacks Android开发 - ActivityLifecycleCallbacks使用方法初探 ActivityLifecycleCallbacks是什么？ Application通过此接口提供了一套回调方法， &hellip;">
+	<meta name="description" content="ActivityLifecycleCallbacks使用方法初探 ActivityLifecycleCallbacks是什么？ Application通过此接口提供了一套回调方法，用于让开发者对Activity的生命周期事件进行集中处理。 &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,12 +91,8 @@
 			
 			<div class="mid-col-container">
 				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-	<h1 class="title" itemprop="name">How to Use ActivityLifecycleCallbacks</h1>
-	<div class="entry-content" itemprop="articleBody"><h1>Android开发 - ActivityLifecycleCallbacks使用方法初探</h1>
-
-<hr />
-
-<h2>ActivityLifecycleCallbacks是什么？</h2>
+	<h1 class="title" itemprop="name">ActivityLifecycleCallbacks使用方法初探</h1>
+	<div class="entry-content" itemprop="articleBody"><h2>ActivityLifecycleCallbacks是什么？</h2>
 
 <ul>
 <li>Application通过此接口提供了一套回调方法，用于让开发者对Activity的生命周期事件进行集中处理。</li>
@@ -106,16 +102,18 @@
 <h2>为什么用ActivityLifecycleCallbacks？</h2>
 
 <ul>
-<li>以往若需监测Activity的生命周期事件代码，你可能是这样做的，重写每一个Acivity的onResume()，然后作统计和处理：
-    @Override
-    protected void onResume() {
-      super.onResume();
-      //TODO 处理和统计代码
-      Log.v(TAG, &ldquo;onResume&rdquo;);
-      Logger.v(TAG, &ldquo;onResume&rdquo;);
-      Logging.v(TAG, &ldquo;onResume&rdquo;);
-      &hellip;
-    }</li>
+<li><p>以往若需监测Activity的生命周期事件代码，你可能是这样做的，重写每一个Acivity的onResume()，然后作统计和处理：</p>
+
+<pre><code>@Override
+protected void onResume() {
+  super.onResume();
+  //TODO 处理和统计代码
+  Log.v(TAG, "onResume");
+  Logger.v(TAG, "onResume");
+  Logging.v(TAG, "onResume");
+  ...
+}
+</code></pre></li>
 <li>ActivityLifecycleCallbacks接口回调可以简化这一繁琐过程，在一个类中作统一处理</li>
 </ul>
 
@@ -125,16 +123,21 @@
 <ul>
 <li>android.app.Application.ActivityLifecycleCallbacks</li>
 <li>要求API 14+ （Android 4.0+）</li>
-<li>继承Application
-    public class BaseApplication extends Application</li>
-<li>在AndroidManifest里起用自定义Application
-    &lt;application android:name=&ldquo;.global.BaseApplication&rdquo;</li>
-<li><p>重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
-    public void onCreate() {
-      super.onCreate();
-      this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {</p>
+<li><p>继承Application</p>
 
-<pre><code>    @Override
+<pre><code>public class BaseApplication extends Application
+</code></pre></li>
+<li><p>在AndroidManifest里起用自定义Application</p>
+
+<pre><code>&lt;application android:name=".global.BaseApplication"
+</code></pre></li>
+<li><p>重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口</p>
+
+<pre><code>public void onCreate() {
+  super.onCreate();
+  this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+
+    @Override
     public void onActivityStopped(Activity activity) {
       Logger.v(activity, "onActivityStopped");
     }
@@ -171,19 +174,21 @@
   });
 };
 </code></pre></li>
-<li><p>运行结果(Logcat日志)
-    10-21 14:32:57.722: V/WelcomeActivity(8085): onActivityCreated
-    10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityStarted
-    10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityResumed
-    10-21 14:32:59.164: V/WelcomeActivity(8085): onActivityPaused
-    10-21 14:32:59.194: V/MainActivity(8085): onActivityCreated
-    10-21 14:32:59.224: V/MainActivity(8085): onActivityStarted
-    10-21 14:32:59.224: V/MainActivity(8085): onActivityResumed
-    10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityStopped
-    10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityDestroyed
-    10-21 14:33:06.502: V/MainActivity(8085): onActivityPaused
-    10-21 14:33:06.612: V/MainActivity(8085): onActivityStopped
-    10-21 14:33:06.612: V/MainActivity(8085): onActivityDestroyed</p></li>
+<li><p>运行结果(Logcat日志)</p>
+
+<pre><code>10-21 14:32:57.722: V/WelcomeActivity(8085): onActivityCreated
+10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityStarted
+10-21 14:32:57.762: V/WelcomeActivity(8085): onActivityResumed
+10-21 14:32:59.164: V/WelcomeActivity(8085): onActivityPaused
+10-21 14:32:59.194: V/MainActivity(8085): onActivityCreated
+10-21 14:32:59.224: V/MainActivity(8085): onActivityStarted
+10-21 14:32:59.224: V/MainActivity(8085): onActivityResumed
+10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityStopped
+10-21 14:32:59.735: V/WelcomeActivity(8085): onActivityDestroyed
+10-21 14:33:06.502: V/MainActivity(8085): onActivityPaused
+10-21 14:33:06.612: V/MainActivity(8085): onActivityStopped
+10-21 14:33:06.612: V/MainActivity(8085): onActivityDestroyed
+</code></pre></li>
 </ul>
 
 

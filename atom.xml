@@ -4,7 +4,7 @@
   <title><![CDATA[别过来]]></title>
   <link href="http://tongcpp.github.io/atom.xml" rel="self"/>
   <link href="http://tongcpp.github.io/"/>
-  <updated>2014-10-21T15:16:32+08:00</updated>
+  <updated>2014-10-21T18:45:33+08:00</updated>
   <id>http://tongcpp.github.io/</id>
   <author>
     <name><![CDATA[Atom]]></name>
@@ -57,7 +57,7 @@ protected void onResume() {
 
 <pre><code>&lt;application android:name=".global.BaseApplication"
 </code></pre></li>
-<li><p>重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口</p>
+<li><p>重写Application的onCreate()方法，或在Application的无参构造方法内，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口</p>
 
 <pre><code>public void onCreate() {
   super.onCreate();

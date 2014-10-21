@@ -155,7 +155,7 @@ protected void onResume() {
 
 <pre><code>&lt;application android:name=".global.BaseApplication"
 </code></pre></li>
-<li><p>重写Application的onCreate()方法，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口</p>
+<li><p>重写Application的onCreate()方法，或在Application的无参构造方法内，调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口</p>
 
 <pre><code>public void onCreate() {
   super.onCreate();

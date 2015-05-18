@@ -1,0 +1,192 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Handle onContextItemSelected in Fragment in Viewpager - 别过来</title>
+	<meta name="author" content="Atom">
+
+	
+	<meta name="description" content="Handle onContextItemSelected in Fragment in Viewpager ContextMenu 上下文菜单ContextMenu由系统支持，常用于通过长按控件弹出列表形菜单，实现步骤如下 - onCreateContextMenu方法 创建菜单 - &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="别过来" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tongcpp.github.io/blog/2014/12/29/handle-oncontextitemselected-in-fragment-in-viewpager/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--<link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+  
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src="/images/blog_head.jpg" alt="Profile Picture" style="width: 160px;" />
+</div>
+<hgroup>
+  <h1><a href="/">别过来</a></h1>
+</hgroup>
+<p class="subtitle">让我飞奔过去</p>
+<nav id="main-nav"><ul class="main">
+    <li><a href="/">首页</a></li>
+    <li><a href="/blog/archives">所有文章</a></li>
+    <li><a href="http://about.me/wangtong">关于我</a></li>
+</ul>
+
+<section class="aboutme">
+  <p>
+    An Android App Developer
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		<a class="weibo" href="http://www.weibo.com/1757517965" title="Weibo">Weibo</a>
+		
+		
+		
+		
+		
+		
+			<a class="github" href="https://github.com/tongcpp" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+    	
+    	
+			<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Handle onContextItemSelected in Fragment in Viewpager</h1>
+	<div class="entry-content" itemprop="articleBody"><h2>ContextMenu</h2>
+
+<p>上下文菜单ContextMenu由系统支持，常用于通过长按控件弹出列表形菜单，实现步骤如下
+ - onCreateContextMenu方法 创建菜单
+ - registerForContextMenu方法，为需响应的控件注册
+ - onContextItemSelected方法，响应点击</p>
+
+<h2>在Viewpager中的Fragment使用ContextMenu发生的问题</h2>
+
+<p>在我的具体项目环境中，Viewpager中存在3个Fragment（0/1/2），并继承自一个父类BaseFragment。在父类中完成了上下文菜单的绝大部分工作，即上文提到的创建/注册/响应点击；
+子类中仅重写onCreateContextMenu方法，用于区分修改菜单显示；那么问题来了：
+ - 当点击Fragment0的上下文菜单的某项时，Fragment1和2的点击响应事件也同时执行了；
+ - 当分别点击Fragment1和2的上下文菜单时，也仍然按照Fragment0-1-2的顺序将响应事件依次执行一遍；</p>
+
+<h2>解决方法</h2>
+
+<p>问题的症结在于Viewpager改变了其中的Fragment显式的生命周期和关联关系，在前文《关于Activity中的Viewpager中的Fragment的生命周期》我也提到过这一问题，并尝试采用setUserVisibleHint方法解决了问题；
+在本文中同样，可以采用getUserVisibleHint()方法判断当前Fragment是否真实可见，如可见则响应，不可见则截止并向下分发，直到有可见页面响应为止。</p>
+
+<ul>
+<li><p>在3个Fragment子类中，均需重写
+  @Override
+     public boolean onContextItemSelected(MenuItem item) {
+         if (getUserVisibleHint()) {
+             return super.onContextItemSelected(item);
+         }
+         return false;
+     }</p></li>
+<li><p>return true  代表截断</p></li>
+<li>return false 代表继续分发</li>
+</ul>
+
+
+<h2>另一种解决方案</h2>
+
+<ul>
+<li>StackOverFlow提供了另一个解决方案，为每一个Fragment分别创建菜单，在创建时设置Group组号，并在分别响应点击时判断组号来完成截止和分发；</li>
+<li>本文方法针对我的具体代码而言改动较小，更为简便清晰，故未采用上述方式。</li>
+</ul>
+
+</div>
+
+</article>
+
+	<!--	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+-->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_cqq"></a>
+	<a class="jiathis_button_fb"></a>
+	<a class="jiathis_button_googleplus"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1409651644209116" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+
+
+
+</div>
+			</div>
+			<footer id="footer" class="inner">Copyright &copy; 2015
+
+    Atom
+
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+		</div>
+	</div>
+	
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

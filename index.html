@@ -108,6 +108,155 @@
   
 
 
+<time datetime="2015-05-18T15:38:24+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2015/05/18/set-embeded-actionbar-and-tab/" itemprop="url">Set Embeded Actionbar and Tab</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h2>Actionbar使用Tab模式</h2>
+
+<ul>
+<li>ActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS)即可另Actionbra使用tab作为导航模式；</li>
+<li>ActionBar.addTab(Tab tab)使用该方法为你的导航添加具体的Tab；</li>
+</ul>
+
+
+<h2>显示为单行还是两行？</h2>
+
+<ul>
+<li>根据developer官方指导，当屏幕宽度足够时，Tab将嵌入Actionbar显示为一行，如大屏Pad、手机横屏时；</li>
+<li><img src="http://developer.android.com/images/ui/actionbar-tabs@2x.png" alt="Action bar tabs on a wide screen" /></li>
+<li>当屏幕宽度较窄时，Tab显示在Actionbar下一行，总共两行，常见于手机竖屏时；</li>
+<li><img src="http://developer.android.com/images/ui/actionbar-tabs-stacked@2x.png" alt="Tabs on a narrow screen" /></li>
+</ul>
+
+
+<h2>强制在所有情况下显示为单行或两行</h2>
+
+<ul>
+<li>有时需求在pad上显示双行Tab，或是在手机竖屏时显示为单行Actionbar；</li>
+<li><p>强制显示为单行
+    try {
+              Method setHasEmbeddedTabsMethod = mActionBar.getClass().getDeclaredMethod(
+                      &ldquo;setHasEmbeddedTabs&rdquo;, boolean.class);
+              setHasEmbeddedTabsMethod.setAccessible(true);
+              setHasEmbeddedTabsMethod.invoke(mActionBar, true);
+          } catch (Exception ignore) {
+          }</p></li>
+<li><p>强制显示为两行
+    try {
+              Method setHasEmbeddedTabsMethod = mActionBar.getClass().getDeclaredMethod(
+                      &ldquo;setHasEmbeddedTabs&rdquo;, boolean.class);
+              setHasEmbeddedTabsMethod.setAccessible(true);
+              setHasEmbeddedTabsMethod.invoke(mActionBar, false);
+          } catch (Exception ignore) {
+          }</p></li>
+</ul>
+
+
+<h2>使用ActionbarSherlock</h2>
+
+<ul>
+<li>ActionbarSherlock在3.0系统版本及以上直接调用Android原生的Actionbar，在2.3及以下使用内建的Actionbar来兼容；</li>
+<li>原生类ActionBarWrapper中，通过上边的反射修改private final android.app.ActionBar mActionBar；</li>
+<li>兼容类ActionBarImpl中，指定setHasEmbeddedTabs(boolean hasEmbeddedTabs)中参数即可；</li>
+</ul>
+
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-29T11:09:54+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2014/12/29/handle-oncontextitemselected-in-fragment-in-viewpager/" itemprop="url">Handle onContextItemSelected in Fragment in Viewpager</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h2>ContextMenu</h2>
+
+<p>上下文菜单ContextMenu由系统支持，常用于通过长按控件弹出列表形菜单，实现步骤如下
+ - onCreateContextMenu方法 创建菜单
+ - registerForContextMenu方法，为需响应的控件注册
+ - onContextItemSelected方法，响应点击</p>
+
+<h2>在Viewpager中的Fragment使用ContextMenu发生的问题</h2>
+
+<p>在我的具体项目环境中，Viewpager中存在3个Fragment（0/1/2），并继承自一个父类BaseFragment。在父类中完成了上下文菜单的绝大部分工作，即上文提到的创建/注册/响应点击；
+子类中仅重写onCreateContextMenu方法，用于区分修改菜单显示；那么问题来了：
+ - 当点击Fragment0的上下文菜单的某项时，Fragment1和2的点击响应事件也同时执行了；
+ - 当分别点击Fragment1和2的上下文菜单时，也仍然按照Fragment0-1-2的顺序将响应事件依次执行一遍；</p>
+
+<h2>解决方法</h2>
+
+<p>问题的症结在于Viewpager改变了其中的Fragment显式的生命周期和关联关系，在前文《关于Activity中的Viewpager中的Fragment的生命周期》我也提到过这一问题，并尝试采用setUserVisibleHint方法解决了问题；
+在本文中同样，可以采用getUserVisibleHint()方法判断当前Fragment是否真实可见，如可见则响应，不可见则截止并向下分发，直到有可见页面响应为止。</p>
+
+<ul>
+<li><p>在3个Fragment子类中，均需重写
+  @Override
+     public boolean onContextItemSelected(MenuItem item) {
+         if (getUserVisibleHint()) {
+             return super.onContextItemSelected(item);
+         }
+         return false;
+     }</p></li>
+<li><p>return true  代表截断</p></li>
+<li>return false 代表继续分发</li>
+</ul>
+
+
+<h2>另一种解决方案</h2>
+
+<ul>
+<li>StackOverFlow提供了另一个解决方案，为每一个Fragment分别创建菜单，在创建时设置Group组号，并在分别响应点击时判断组号来完成截止和分发；</li>
+<li>本文方法针对我的具体代码而言改动较小，更为简便清晰，故未采用上述方式。</li>
+</ul>
+
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
 <time datetime="2014-11-19T17:20:51+08:00" data-updated="true" itemprop="datePublished"></time></div>
 		<div class="tags">
 
@@ -529,7 +678,7 @@ return mpPullToRefreshPinnedSectionListView.getRefreshableView();
     <div class="center"><a href="/blog/archives">所有文章</a></div>
 </nav></div>
 			</div>
-			<footer id="footer" class="inner">Copyright &copy; 2014
+			<footer id="footer" class="inner">Copyright &copy; 2015
 
     Atom
 

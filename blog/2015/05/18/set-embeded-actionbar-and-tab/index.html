@@ -1,0 +1,202 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>set embeded actionbar and tab - 别过来</title>
+	<meta name="author" content="Atom">
+
+	
+	<meta name="description" content="Set Embeded Actionbar and Tab Actionbar使用Tab模式 ActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS)即可另Actionbra使用tab作为导航模式；
+ActionBar.addTab( &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="别过来" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tongcpp.github.io/blog/2015/05/18/set-embeded-actionbar-and-tab/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--<link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+  
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src="/images/blog_head.jpg" alt="Profile Picture" style="width: 160px;" />
+</div>
+<hgroup>
+  <h1><a href="/">别过来</a></h1>
+</hgroup>
+<p class="subtitle">让我飞奔过去</p>
+<nav id="main-nav"><ul class="main">
+    <li><a href="/">首页</a></li>
+    <li><a href="/blog/archives">所有文章</a></li>
+    <li><a href="http://about.me/wangtong">关于我</a></li>
+</ul>
+
+<section class="aboutme">
+  <p>
+    An Android App Developer
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		<a class="weibo" href="http://www.weibo.com/1757517965" title="Weibo">Weibo</a>
+		
+		
+		
+		
+		
+		
+			<a class="github" href="https://github.com/tongcpp" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+    	
+    	
+			<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Set Embeded Actionbar and Tab</h1>
+	<div class="entry-content" itemprop="articleBody"><h2>Actionbar使用Tab模式</h2>
+
+<ul>
+<li>ActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS)即可另Actionbra使用tab作为导航模式；</li>
+<li>ActionBar.addTab(Tab tab)使用该方法为你的导航添加具体的Tab；</li>
+</ul>
+
+
+<h2>显示为单行还是两行？</h2>
+
+<ul>
+<li>根据developer官方指导，当屏幕宽度足够时，Tab将嵌入Actionbar显示为一行，如大屏Pad、手机横屏时；</li>
+<li><img src="http://developer.android.com/images/ui/actionbar-tabs@2x.png" alt="Action bar tabs on a wide screen" /></li>
+<li>当屏幕宽度较窄时，Tab显示在Actionbar下一行，总共两行，常见于手机竖屏时；</li>
+<li><img src="http://developer.android.com/images/ui/actionbar-tabs-stacked@2x.png" alt="Tabs on a narrow screen" /></li>
+</ul>
+
+
+<h2>强制在所有情况下显示为单行或两行</h2>
+
+<ul>
+<li>有时需求在pad上显示双行Tab，或是在手机竖屏时显示为单行Actionbar；</li>
+<li><p>强制显示为单行
+    try {
+              Method setHasEmbeddedTabsMethod = mActionBar.getClass().getDeclaredMethod(
+                      &ldquo;setHasEmbeddedTabs&rdquo;, boolean.class);
+              setHasEmbeddedTabsMethod.setAccessible(true);
+              setHasEmbeddedTabsMethod.invoke(mActionBar, true);
+          } catch (Exception ignore) {
+          }</p></li>
+<li><p>强制显示为两行
+    try {
+              Method setHasEmbeddedTabsMethod = mActionBar.getClass().getDeclaredMethod(
+                      &ldquo;setHasEmbeddedTabs&rdquo;, boolean.class);
+              setHasEmbeddedTabsMethod.setAccessible(true);
+              setHasEmbeddedTabsMethod.invoke(mActionBar, false);
+          } catch (Exception ignore) {
+          }</p></li>
+</ul>
+
+
+<h2>使用ActionbarSherlock</h2>
+
+<ul>
+<li>ActionbarSherlock在3.0系统版本及以上直接调用Android原生的Actionbar，在2.3及以下使用内建的Actionbar来兼容；</li>
+<li>原生类ActionBarWrapper中，通过上边的反射修改private final android.app.ActionBar mActionBar；</li>
+<li>兼容类ActionBarImpl中，指定setHasEmbeddedTabs(boolean hasEmbeddedTabs)中参数即可；</li>
+</ul>
+
+</div>
+
+</article>
+
+	<!--	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+-->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_cqq"></a>
+	<a class="jiathis_button_fb"></a>
+	<a class="jiathis_button_googleplus"></a>
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1409651644209116" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+
+
+
+</div>
+			</div>
+			<footer id="footer" class="inner">Copyright &copy; 2015
+
+    Atom
+
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+		</div>
+	</div>
+	
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
